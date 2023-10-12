@@ -1,8 +1,10 @@
+using System;
 using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
-    [SerializeField] private float _speed = 6f;
+    [SerializeField] private float _speed = 5f;
+    [SerializeField] private bool _faseRight = true;
     private Rigidbody2D _rb;
     private Animator _anim;
 
@@ -15,6 +17,7 @@ public class PlayerMove : MonoBehaviour
     private void FixedUpdate()
     {
         MoveLogick();
+        HorizontalRot();
     }
 
     private void MoveLogick()
@@ -30,6 +33,25 @@ public class PlayerMove : MonoBehaviour
         else 
         {
             _anim.SetBool("PlayerRun", false);
+        }
+    }
+
+    private void HorizontalRot()
+    {
+        if (Input.GetAxis("Horizontal") > 0)
+        {
+            _faseRight = true;
+            Quaternion rot = transform.rotation;
+            rot.y = 0;
+            transform.rotation = rot;
+        }
+        if (Input.GetAxis("Horizontal") < 0)
+        {
+            _faseRight = false;
+            Quaternion rot = transform.rotation;
+            rot.y = 180;
+            transform.rotation = rot;
+            _anim.SetBool("PlayerRun", true);
         }
     }
 }
